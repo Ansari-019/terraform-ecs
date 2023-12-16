@@ -55,7 +55,7 @@ module "alb" {
     https = {
       port            = 443
       protocol        = "HTTPS"
-      certificate_arn = "arn:aws:acm:us-east-1:686432060491:certificate/eab411aa-079c-4e47-9ea5-e948437fd9e7"
+      certificate_arn = "arn:aws:acm:us-east-1:326125176711:certificate/285797d9-c289-4cdf-8d3d-eb9f4326dffa"
 
       # Default action
       forward = {

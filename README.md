@@ -37,3 +37,11 @@ aws servicediscovery create-private-dns-namespace --name saqlainmushtaq.com --vp
 ```bash
 aws servicediscovery list-namespaces
 ```
+
+##### SSM Secure String Parameter with aws cli
+```bash
+aws ssm put-parameter --name "pythonapp_secret_1" --value "your_secure_value" --type SecureString
+```
+```bash
+aws ssm put-parameter --name "pythonapp_secret_2" --value "your_secure_value" --type SecureString
+```
