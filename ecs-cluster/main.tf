@@ -25,10 +25,6 @@ module "ecs" {
 
   cluster_name = "ecs-cloudgeeks"
 
-  cluster_service_connect_defaults = {
-    "namespace" = "arn:aws:servicediscovery:us-east-1:326125176711:namespace/ns-af4uihpgemsd7fft"
-  }
-
   cluster_settings = {
     "name": "containerInsights",
     "value": "enabled"
@@ -38,7 +34,7 @@ module "ecs" {
     execute_command_configuration = {
       logging = "OVERRIDE"
       log_configuration = {
-        cloud_watch_log_group_name = "/aws/ecs"
+        cloud_watch_log_group_name = "/aws/ecs/cloudgeeks-cluster"
       }
     }
   }
