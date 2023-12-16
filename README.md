@@ -1,4 +1,6 @@
-# Terraform ECS
+# Terraform ECS Service Discovery
+
+- https://www.youtube.com/watch?v=bcjqcv9zLwU&t=344s
 
 - Create a backend bucket for terraform state with aws cli
 ```bash
