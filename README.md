@@ -1,7 +1,9 @@
 # Terraform ECS Service Discovery
 
 - https://www.youtube.com/watch?v=bcjqcv9zLwU&t=344s
-
+  
+- https://github.com/quickbooks2018/ecs-service-discovery
+  
 - Create a backend bucket for terraform state with aws cli
 ```bash
 aws s3api create-bucket --bucket terraform-cloudgeeks --region us-east-1
