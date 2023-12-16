@@ -49,3 +49,23 @@ aws ssm put-parameter --name "pythonapp_secret_1" --value "your_secure_value" --
 ```bash
 aws ssm put-parameter --name "pythonapp_secret_2" --value "your_secure_value" --type SecureString
 ```
+
+- TroubleShooting https://stackoverflow.com/questions/53370256/aws-creation-failed-service-already-exists-service-awsservicediscovery-stat
+```bash
+aws servicediscovery list-services --region us-east-1
+```
+```bash
+aws servicediscovery delete-service --id srv-i36tuwrjlbrr4ogl
+```
+
+- Create a service in aws cloud map
+```bash
+aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config 'NamespaceId=ns-b5dgvb5y7cbssha5,DnsRecords=[{Type=A,TTL=10}]'
+aws servicediscovery create-service --name pythonapp --namespace-id ns-b5dgvb5y7cbssha5 --dns-config 'NamespaceId=ns-b5dgvb5y7cbssha5,DnsRecords=[{Type=A,TTL=10}]'
+```
+
+- Create a service in aws cloud map with different format
+```bash
+aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
+aws servicediscovery create-service --name pythonapp --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
+```

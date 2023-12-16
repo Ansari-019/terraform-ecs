@@ -133,18 +133,8 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 # Service Discovery
 # https://medium.com/inspiredbrilliance/ecs-integrated-service-discovery-18cdbce45d8b
 # we created namespace with aws cli
+# aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
 
-resource "aws_service_discovery_service" "service" {
-  name = local.container_name
-  description = "Service for ${local.container_name}"
-  dns_config {
-    namespace_id = local.namespace_id
-    dns_records {
-      ttl = 10
-      type = "A"
-    }
-  }
-}
 
 ###################
 # Service Section
@@ -159,8 +149,9 @@ resource "aws_ecs_service" "aws_ecs_service" {
   task_definition                          = aws_ecs_task_definition.es_task_definition.arn
   desired_count                            = "1"
 
+  # aws servicediscovery list-services --region us-east-1
   service_registries {
-    registry_arn = aws_service_discovery_service.service.arn
+    registry_arn = "arn:aws:servicediscovery:us-east-1:400758257983:service/srv-i36tuwrjlbrr4ogl"
   }
 
   # https://stackoverflow.com/questions/75213261/aws-service-connect-with-terraform
@@ -177,14 +168,14 @@ resource "aws_ecs_service" "aws_ecs_service" {
     }
   }
 
-#  health_check_grace_period_seconds        = "180" # Used if service is configured to use ELB/ALB/NLB
+  #  health_check_grace_period_seconds        = "180" # Used if service is configured to use ELB/ALB/NLB
 
 
-#  load_balancer {
-#    target_group_arn  = data.terraform_remote_state.alb.outputs.alb.target_groups["redis-app"].arn
-#    container_name    = local.container_name
-#    container_port    = local.port
-#  }
+  #  load_balancer {
+  #    target_group_arn  = data.terraform_remote_state.alb.outputs.alb.target_groups["redis-app"].arn
+  #    container_name    = local.container_name
+  #    container_port    = local.port
+  #  }
 
 
   network_configuration {
@@ -211,7 +202,7 @@ resource "aws_appautoscaling_target" "aws_ecs_target" {
   resource_id        = "service/${local.cluster_name}/${local.container_name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
-  
+
 }
 
 
@@ -262,6 +253,5 @@ resource "aws_appautoscaling_policy" "aws_ecs_policy_memory" {
   }
 
   depends_on = [aws_appautoscaling_target.aws_ecs_target]
- 
-}
 
+}
