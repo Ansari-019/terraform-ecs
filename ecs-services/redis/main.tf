@@ -2,7 +2,7 @@
 data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeksca"
+    bucket = "terraform-cloudgeeks"
     key    = "terraform/vpc/terraform.tfstate"
     region = "us-east-1"
   }
@@ -12,7 +12,7 @@ data "terraform_remote_state" "vpc" {
 data "terraform_remote_state" "alb" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeksca"
+    bucket = "terraform-cloudgeeks"
     key    = "terraform/alb/terraform.tfstate"
     region = "us-east-1"
   }
@@ -22,7 +22,7 @@ data "terraform_remote_state" "alb" {
 data "terraform_remote_state" "ecs_cluster" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeksca"
+    bucket = "terraform-cloudgeeks"
     key    = "terraform/ecs/terraform.tfstate"
     region = "us-east-1"
   }
