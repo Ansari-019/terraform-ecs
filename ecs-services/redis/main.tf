@@ -18,7 +18,7 @@ data "terraform_remote_state" "alb" {
   }
 }
 
-# Get the alb from remote state
+# Get the ecs cluster from remote state
 data "terraform_remote_state" "ecs_cluster" {
   backend = "s3"
   config = {
