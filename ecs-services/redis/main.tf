@@ -2,7 +2,7 @@
 data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeks"
+    bucket = "terraform-cloudgeeksca"
     key    = "terraform/vpc/terraform.tfstate"
     region = "us-east-1"
   }
@@ -12,7 +12,7 @@ data "terraform_remote_state" "vpc" {
 data "terraform_remote_state" "alb" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeks"
+    bucket = "terraform-cloudgeeksca"
     key    = "terraform/alb/terraform.tfstate"
     region = "us-east-1"
   }
@@ -22,7 +22,7 @@ data "terraform_remote_state" "alb" {
 data "terraform_remote_state" "ecs_cluster" {
   backend = "s3"
   config = {
-    bucket = "terraform-cloudgeeks"
+    bucket = "terraform-cloudgeeksca"
     key    = "terraform/ecs/terraform.tfstate"
     region = "us-east-1"
   }
@@ -39,9 +39,9 @@ locals {
 
 
   # Ecs Service Connect
-  namespace_arn  = "arn:aws:servicediscovery:us-east-1:326125176711:namespace/ns-af4uihpgemsd7fft"
+  namespace_arn  = "arn:aws:servicediscovery:us-east-1:205778047326:namespace/ns-koohieplz5q34cdp"
   namespace_name = "saqlainmushtaq.com"
-  namespace_id   = "ns-af4uihpgemsd7fft"
+  namespace_id   = "ns-koohieplz5q34cdp"
 
   # environment
   environment = "dev"
@@ -76,11 +76,11 @@ locals {
   secrets = [
     {
       name : "pythonapp_secret_1",
-      valueFrom : "arn:aws:ssm:us-east-1:326125176711:parameter/pythonapp_secret_1"
+      valueFrom : "arn:aws:ssm:us-east-1:205778047326:parameter/pythonapp_secret_1"
     },
     {
       name : "pythonapp_secret_2",
-      valueFrom : "arn:aws:ssm:us-east-1:326125176711:parameter/pythonapp_secret_2"
+      valueFrom : "arn:aws:ssm:us-east-1:205778047326:parameter/pythonapp_secret_2"
     }
   ]
 
@@ -91,9 +91,9 @@ locals {
 
 resource "aws_ecs_task_definition" "es_task_definition" {
   family                       = "${local.container_name}_${local.environment}"
-  cpu                          = "256"
+  cpu                          = "1024"
   network_mode                 = "awsvpc"
-  memory                       = "512"
+  memory                       = "2048"
   requires_compatibilities     = ["FARGATE"]
   task_role_arn                = aws_iam_role.ecs-task-execution-role-ecs-fargate.arn
   execution_role_arn           = aws_iam_role.ecs-task-execution-role-ecs-fargate.arn
@@ -133,7 +133,7 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 # Service Discovery
 # https://medium.com/inspiredbrilliance/ecs-integrated-service-discovery-18cdbce45d8b
 # we created namespace with aws cli
-# aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
+# aws servicediscovery create-service --name redis --namespace-id ns-koohieplz5q34cdp --dns-config '{"NamespaceId": "ns-koohieplz5q34cdp", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
 
 
 ###################
@@ -149,10 +149,11 @@ resource "aws_ecs_service" "aws_ecs_service" {
   task_definition                          = aws_ecs_task_definition.es_task_definition.arn
   desired_count                            = "1"
 
-  # aws servicediscovery list-services --region us-east-1
-  service_registries {
-    registry_arn = "arn:aws:servicediscovery:us-east-1:400758257983:service/srv-i36tuwrjlbrr4ogl"
-  }
+  # Do not use this if you are using service connect
+#  # aws servicediscovery list-services --region us-east-1
+#  service_registries {
+#    registry_arn = "arn:aws:servicediscovery:us-east-1:205778047326:service/srv-w7weekujfqiutz6h"
+#  }
 
   # https://stackoverflow.com/questions/75213261/aws-service-connect-with-terraform
   service_connect_configuration {
