@@ -58,13 +58,13 @@ aws servicediscovery list-services --region us-east-1
 aws servicediscovery delete-service --id srv-i36tuwrjlbrr4ogl
 ```
 
-- Create a service in aws cloud map
+- Create a service in aws cloud map (Note: These commands are not required for aws ecs service connect)
 ```bash
 aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config 'NamespaceId=ns-b5dgvb5y7cbssha5,DnsRecords=[{Type=A,TTL=10}]'
 aws servicediscovery create-service --name pythonapp --namespace-id ns-b5dgvb5y7cbssha5 --dns-config 'NamespaceId=ns-b5dgvb5y7cbssha5,DnsRecords=[{Type=A,TTL=10}]'
 ```
 
-- Create a service in aws cloud map with different format
+- Create a service in aws cloud map with different format (Note: These commands are not required for aws ecs service connect)
 ```bash
 aws servicediscovery create-service --name redis --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
 aws servicediscovery create-service --name pythonapp --namespace-id ns-b5dgvb5y7cbssha5 --dns-config '{"NamespaceId": "ns-b5dgvb5y7cbssha5", "DnsRecords": [{"Type": "A", "TTL": 10}]}'
